@@ -1,0 +1,168 @@
+<!DOCTYPE html><html><head><title>src/less/mtgox.less | MtGox</title><meta charset="utf-8"><style>a.mtgox-button{padding:1px;background:white;border:1px solid #f9b313;display:inline-block;overflow:hidden;font-family:arial,"DejaVu Sans",sans-serif;font-weight:bold;font-size:16px;line-height:20px;text-decoration:none;color:#ffffff;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-webkit-background-clip:padding-box;-moz-background-clip:padding;background-clip:padding-box;-webkit-box-shadow:0 0 1px 1px #f9b313;-moz-box-shadow:0 0 1px 1px #f9b313;box-shadow:0 0 1px 1px #f9b313;-webkit-transition:all 0.25s 0 ease-in-out;-moz-transition:all 0.25s 0 ease-in-out;-ms-transition:all 0.25s 0 ease-in-out;-o-transition:all 0.25s 0 ease-in-out;transition:all 0.25s 0 ease-in-out;}a.mtgox-button .mtgox-button-amount{overflow:hidden;height:18px;padding:10px;padding-right:100px;vertical-align:middle;position:relative;text-shadow:1px 1px 2px rgba(0, 0, 0, 0.4);-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;-webkit-background-clip:padding-box;-moz-background-clip:padding;background-clip:padding-box;background-color:#f9b313;background-image:-webkit-linear-gradient(bottom , #f1aa06 0% , #f9b313 100%);background-image:-moz-linear-gradient(bottom , #f1aa06 0% , #f9b313 100%);background-image:-ms-linear-gradient(bottom , #f1aa06 0% , #f9b313 100%);background-image:-o-linear-gradient(bottom , #f1aa06 0% , #f9b313 100%);background-image:linear-gradient(bottom , #f1aa06 0% , #f9b313 100%);}a.mtgox-button .mtgox-button-amount .mtgox-button-cur{position:relative;top:50px;visibility:hidden;-moz-opacity:0;-khtml-opacity:0;-webkit-opacity:0;opacity:0;}
+a.mtgox-button .mtgox-button-amount .mtgox-button-logo{position:absolute;top:0;bottom:0;right:0;padding-top:0px;width:90px;-webkit-border-radius:5px 5px 0 0;-moz-border-radius:5px 5px 0 0;border-radius:5px 5px 0 0;-webkit-background-clip:padding-box;-moz-background-clip:padding;background-clip:padding-box;background-color:#efefef;background-image:-webkit-linear-gradient(bottom , #e5e5e5 0% , #efefef 100%);background-image:-moz-linear-gradient(bottom , #e5e5e5 0% , #efefef 100%);background-image:-ms-linear-gradient(bottom , #e5e5e5 0% , #efefef 100%);background-image:-o-linear-gradient(bottom , #e5e5e5 0% , #efefef 100%);background-image:linear-gradient(bottom , #e5e5e5 0% , #efefef 100%);}a.mtgox-button .mtgox-button-amount .mtgox-button-logo img{border:0;}
+a.mtgox-button:hover{-webkit-box-shadow:0 0 2px 1.5px #f9b313;-moz-box-shadow:0 0 2px 1.5px #f9b313;box-shadow:0 0 2px 1.5px #f9b313;text-decoration:none;color:#ffffff;}a.mtgox-button:hover .mtgox-button-btc{visibility:hidden;-moz-opacity:0;-khtml-opacity:0;-webkit-opacity:0;opacity:0;}
+a.mtgox-button:hover .mtgox-button-cur{top:-20px;visibility:visible;-moz-opacity:1;-khtml-opacity:1;-webkit-opacity:1;opacity:1;}
+a.mtgox-button *{cursor:pointer;}
+</style><link rel="stylesheet" href="../docs.css"></head><body><div class="styledocco-container"><div class="styledocco-sidebar"><a href="../index.html" class="styledocco-brand">MtGox</a><strong class="styledocco-nav-heading">less</strong><ul class="styledocco-nav"><li><a href="../html/src-less-mtgox.html">mtgox
+</a></li></ul></div><div class="styledocco-main"><div id="section-1" class="styledocco-section"><div class="styledocco-docs"><a href="#section-1" class="pilcrow">&#182;</a><h2>css3.less</h2>
+<p>Useful mixins imported from <a href="https://github.com/MatthewWagerfield/LESS-CSS3-Mixins">https://github.com/MatthewWagerfield/LESS-CSS3-Mixins</a>
+
+</p>
+</div><div class="styledocco-code"><pre><code><span class="at_rule">@<span class="keyword">import</span> <span class="string">"css3.less"</span></span>;</code></pre></div></div><div id="section-2" class="styledocco-section"><div class="styledocco-docs"><a href="#section-2" class="pilcrow">&#182;</a><h1>MtGox Checkout Button</h1>
+<p>This the CSS used by our button to render on all browsers, it involves a few tricks to be compatible with some
+problematic browsers like Firefox &lt; 4 or IE &lt;= 8
+
+</p>
+</div></div><div id="section-3" class="styledocco-section"><div class="styledocco-docs"><a href="#section-3" class="pilcrow">&#182;</a><h2>Variables</h2>
+<p>Allows us to change the whole apparence of the button without having to tinkle with the CSS itself
+
+</p>
+<p><em>mixin</em> <strong>.gradient</strong>(@color: #F5F5F5, @start: #EEE, @stop: #FFF)
+
+</p>
+<p>This mixin create a linear gradient from bottom <em>@start</em> to top <em>@top</em> and define a fallback color through
+<em>@color</em> for older browsers
+
+
+</p>
+<p><em>mixin</em> <strong>.opacity</strong>(@opacity: 0.5)
+
+</p>
+<p>This mixin provides cross browser support for opacity
+
+</p>
+<p> This is the complete HTML needed to display our button
+
+</p>
+<div class="styledocco-example"><a class="mtgox-button">
+    <div class="mtgox-button-amount">
+        <span class="mtgox-button-btc">428.50 BTC</span>
+        <br>
+        <span class="mtgox-button-cur">US$ 2052.52</span>
+        <span class="mtgox-button-logo">
+            <img src="https://payment.mtgox.com/img/button-logo.png" width="88" height="33">
+        </span>
+    </div>
+</a></div><pre><code><span class="tag">&lt;<span class="title">a</span> <span class="attribute">class</span>=<span class="value">"mtgox-button"</span>></span>
+    <span class="tag">&lt;<span class="title">div</span> <span class="attribute">class</span>=<span class="value">"mtgox-button-amount"</span>></span>
+        <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"mtgox-button-btc"</span>></span>428.50 BTC<span class="tag">&lt;/<span class="title">span</span>></span>
+        <span class="tag">&lt;<span class="title">br</span>></span>
+        <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"mtgox-button-cur"</span>></span>US$ 2052.52<span class="tag">&lt;/<span class="title">span</span>></span>
+        <span class="tag">&lt;<span class="title">span</span> <span class="attribute">class</span>=<span class="value">"mtgox-button-logo"</span>></span>
+            <span class="tag">&lt;<span class="title">img</span> <span class="attribute">src</span>=<span class="value">"https://payment.mtgox.com/img/button-logo.png"</span> <span class="attribute">width</span>=<span class="value">"88"</span> <span class="attribute">height</span>=<span class="value">"33"</span>></span>
+        <span class="tag">&lt;/<span class="title">span</span>></span>
+    <span class="tag">&lt;/<span class="title">div</span>></span>
+<span class="tag">&lt;/<span class="title">a</span>></span></code></pre>
+<p>The <code>span &gt; br &gt; span</code> setup allows us to switch the display between the 2 currencies while making sure the
+button is sized based on the content of the 2 elements instead of the main one; It prevents the button from resizing
+itself when
+
+</p>
+</div><div class="styledocco-code"><pre><code><span class="at_rule">@main-color:      <span class="function">rgb(<span class="number">249</span>, <span class="number">179</span>, <span class="number">19</span>)</span></span>;
+<span class="at_rule">@secondary-color: <span class="function">rgb(<span class="number">239</span>, <span class="number">239</span>, <span class="number">239</span>)</span></span>;
+<span class="at_rule">@text-shadow:     <span class="function">rgba(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.4</span>)</span></span>;
+<span class="at_rule">@text-color:      white</span>;
+<span class="at_rule">@round:           <span class="number">5</span>px</span>;
+<span class="at_rule">@main-padding:    <span class="number">10</span>px</span>;
+<span class="at_rule">@font-size:       <span class="number">16</span>px</span>;
+<span class="at_rule">@text-padding:    <span class="number">4</span>px</span>;
+<span class="at_rule">@line-height:     @font-size + @text-padding</span>;
+
+.gradient(@color: #F5F5F5, @start: #EEE, @stop: #FFF) {
+  background-color: @color;
+  .linear-gradient(bottom, ~"," @start 0%, ~"," @stop 100%)
+}
+
+<span class="class">.opacity</span>(<span class="at_rule">@opacity: <span class="number">0.5</span>) </span>{
+  -<span class="tag">moz</span>-<span class="tag">opacity</span>: <span class="at_rule">@opacity</span>;
+  -<span class="tag">khtml</span>-<span class="tag">opacity</span>: <span class="at_rule">@opacity</span>;
+  -<span class="tag">webkit</span>-<span class="tag">opacity</span>: <span class="at_rule">@opacity</span>;
+  <span class="tag">opacity</span>: <span class="at_rule">@opacity</span>;
+}
+
+a.mtgox-button {
+	/* basic styles */
+	padding: 1px;
+	background: white;
+	border: 1px solid @main-color;
+	display: inline-block;
+	overflow: hidden;
+
+	/* text styles */
+	font-family: arial, "DejaVu Sans", sans-serif;
+	font-weight: bold;
+	font-size: @font-size;
+	line-height: @line-height;
+	text-decoration: none;
+	color: @text-color;
+
+	/* ice on top */
+	.border-radius(@round);
+	.box-shadow(0 0 1px 1px @main-color);
+	.transition(all, 0.25s, 0, ease-in-out);
+
+	// the amount element
+	.mtgox-button-amount {
+		overflow: hidden;
+		height: 18px;
+		padding: @main-padding;
+		padding-right: 90px + @main-padding;
+		vertical-align: middle;
+
+		/* we use absolute positioning on mtgox-button-logo */
+		position: relative;
+
+		/* ice on top */
+		.text-shadow(1px, 1px, 2px, @text-shadow);
+		.border-radius(@round);
+		.gradient(@main-color, darken(@main-color, 4%), @main-color);
+
+		// the content element
+		.mtgox-button-cur {
+			position: relative;
+			top: 50px;
+			visibility: hidden;
+			.opacity(0);
+		}
+
+		// the logo element
+		.mtgox-button-logo {
+			position: absolute;
+			top: 0;
+			bottom: 0;
+			right: 0;
+			padding-top: 0px;
+			width: 90px;
+
+			/* ice on top */
+			.border-radius(5px, 5px, 0, 0);
+			.gradient(@secondary-color, darken(@secondary-color, 4%), @secondary-color);
+
+			// fix for FF 3.5
+			img {
+				border: 0;
+			}
+		}
+	}
+
+	// when we hover the button
+	&amp;:hover {
+		.box-shadow(0 0 2px 1.5px @main-color);
+		text-decoration: none;
+		color: @text-color;
+
+		.mtgox-button-btc {
+			visibility: hidden;
+			.opacity(0);
+		}
+		.mtgox-button-cur {
+			top: @line-height * -1;
+			visibility: visible;
+			.opacity(1);
+		}
+	}
+
+	* {
+		cursor: pointer;
+	}
+}</code></pre></div></div></div></div><script src="../docs.js"></script></body></html><!-- Generated with StyleDocco (http://jacobrask.github.com/styledocco). -->
