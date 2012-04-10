@@ -1,5 +1,5 @@
 (function() {
-  var MtGoxElement, MtGoxSocket, Utility, buttons, cssAdded, cssURI, findButtons, head, mtgox, readyDone, registerButton, sIoLoaded, socketIoHost,
+  var MtGoxElement, MtGoxSocket, Utility, buttons, cssAdded, cssURI, findButtons, head, imgLogo, mtgox, readyDone, registerButton, sIoLoaded, socketIoHost,
     __slice = Array.prototype.slice;
 
   buttons = [];
@@ -8,7 +8,9 @@
 
   cssAdded = false;
 
-  cssURI = "https://192.168.1.113:3000/less/mtgox.css";
+  cssURI = "https://payment.mtgox.com/css/mtgox.css";
+
+  imgLogo = "https://payment.mtgox.com/img/button-logo.png";
 
   socketIoHost = "https://socketio.mtgox.com:443";
 
@@ -234,7 +236,7 @@
     cur_element.setContent(btc_text);
     elem_img_container = MtGoxElement.create("span.mtgox-button-logo", {}, elem_amount);
     img_attrs = {
-      src: "https://payment.mtgox.com/img/button-logo.png",
+      src: imgLogo,
       width: "88",
       height: "33"
     };
