@@ -8,6 +8,13 @@ if [ "$1" = "clean" ]; then
 	exit 0;
 fi;
 
+TMP="/tmp/docs.$$"
+if [ "$1" = "pages" ]; then
+	cp -r docs "$TMP";
+	git checkout gh-pages;
+	rsync -avc "$TMP/" ./;
+fi;
+
 # check for pygments
 if [ -z "$( which pygmentize 2>/dev/null  )" ]; then
 	echo "Docco depends on python's pygments, please install it and make sure that pygmentize is in the PATH";
