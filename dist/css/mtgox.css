@@ -1,0 +1,162 @@
+/*
+css3.less
+---------
+Useful mixins imported from https://github.com/MatthewWagerfield/LESS-CSS3-Mixins
+*/
+/*
+MtGox Checkout Button
+=====================
+This the CSS used by our button to render on all browsers, it involves a few tricks to be compatible with some
+problematic browsers like Firefox < 4 or IE <= 8
+*/
+/*
+Variables
+---------
+Allows us to change the whole apparence of the button without having to tinkle with the CSS itself
+*/
+/*
+*mixin* **.gradient**(@color: #F5F5F5, @start: #EEE, @stop: #FFF)
+
+This mixin create a linear gradient from bottom *@start* to top *@top* and define a fallback color through
+*@color* for older browsers
+
+*/
+/*
+*mixin* **.opacity**(@opacity: 0.5)
+
+This mixin provides cross browser support for opacity
+*/
+/* This is the complete HTML needed to display our button
+
+	<a class="mtgox-button">
+		<div class="mtgox-button-amount">
+			<span class="mtgox-button-btc">428.50 BTC</span>
+			<br>
+			<span class="mtgox-button-cur">US$ 2052.52</span>
+			<span class="mtgox-button-logo">
+				<img src="https://payment.mtgox.com/img/button-logo.png" width="88" height="33">
+			</span>
+		</div>
+	</a>
+
+The ```span > br > span``` setup allows us to switch the display between the 2 currencies while making sure the
+button is sized based on the content of the 2 elements instead of the main one; It prevents the button from resizing
+itself when
+*/
+a.mtgox-button {
+  /* basic styles */
+
+  padding: 1px;
+  background: white;
+  border: 1px solid #f9b313;
+  display: inline-block;
+  overflow: hidden;
+  /* text styles */
+
+  font-family: arial, "DejaVu Sans", sans-serif;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 20px;
+  text-decoration: none;
+  color: #ffffff;
+  /* ice on top */
+
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  -webkit-box-shadow: 0 0 1px 1px #f9b313;
+  -moz-box-shadow: 0 0 1px 1px #f9b313;
+  box-shadow: 0 0 1px 1px #f9b313;
+  -webkit-transition: all 0.25s 0 ease-in-out;
+  -moz-transition: all 0.25s 0 ease-in-out;
+  -ms-transition: all 0.25s 0 ease-in-out;
+  -o-transition: all 0.25s 0 ease-in-out;
+  transition: all 0.25s 0 ease-in-out;
+}
+a.mtgox-button .mtgox-button-amount {
+  overflow: hidden;
+  height: 18px;
+  padding: 10px;
+  padding-right: 100px;
+  vertical-align: middle;
+  /* we use absolute positioning on mtgox-button-logo */
+
+  position: relative;
+  /* ice on top */
+
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  background-color: #f9b313;
+  background-image: -webkit-linear-gradient(bottom , #f1aa06 0% , #f9b313 100%);
+  background-image: -moz-linear-gradient(bottom , #f1aa06 0% , #f9b313 100%);
+  background-image: -ms-linear-gradient(bottom , #f1aa06 0% , #f9b313 100%);
+  background-image: -o-linear-gradient(bottom , #f1aa06 0% , #f9b313 100%);
+  background-image: linear-gradient(bottom , #f1aa06 0% , #f9b313 100%);
+}
+a.mtgox-button .mtgox-button-amount .mtgox-button-cur {
+  position: relative;
+  top: 50px;
+  visibility: hidden;
+  -moz-opacity: 0;
+  -khtml-opacity: 0;
+  -webkit-opacity: 0;
+  opacity: 0;
+}
+a.mtgox-button .mtgox-button-amount .mtgox-button-logo {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  padding-top: 0px;
+  width: 90px;
+  /* ice on top */
+
+  -webkit-border-radius: 5px 5px 0 0;
+  -moz-border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  -webkit-background-clip: padding-box;
+  -moz-background-clip: padding;
+  background-clip: padding-box;
+  background-color: #efefef;
+  background-image: -webkit-linear-gradient(bottom , #e5e5e5 0% , #efefef 100%);
+  background-image: -moz-linear-gradient(bottom , #e5e5e5 0% , #efefef 100%);
+  background-image: -ms-linear-gradient(bottom , #e5e5e5 0% , #efefef 100%);
+  background-image: -o-linear-gradient(bottom , #e5e5e5 0% , #efefef 100%);
+  background-image: linear-gradient(bottom , #e5e5e5 0% , #efefef 100%);
+}
+a.mtgox-button .mtgox-button-amount .mtgox-button-logo img {
+  border: 0;
+}
+a.mtgox-button:hover {
+  -webkit-box-shadow: 0 0 2px 1.5px #f9b313;
+  -moz-box-shadow: 0 0 2px 1.5px #f9b313;
+  box-shadow: 0 0 2px 1.5px #f9b313;
+  text-decoration: none;
+  color: #ffffff;
+}
+a.mtgox-button:hover .mtgox-button-btc {
+  visibility: hidden;
+  -moz-opacity: 0;
+  -khtml-opacity: 0;
+  -webkit-opacity: 0;
+  opacity: 0;
+}
+a.mtgox-button:hover .mtgox-button-cur {
+  top: -20px;
+  visibility: visible;
+  -moz-opacity: 1;
+  -khtml-opacity: 1;
+  -webkit-opacity: 1;
+  opacity: 1;
+}
+a.mtgox-button * {
+  cursor: pointer;
+}
