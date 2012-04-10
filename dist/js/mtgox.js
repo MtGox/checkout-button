@@ -8,7 +8,7 @@
 
   cssAdded = false;
 
-  cssURI = "https://payment.mtgox.com/css/mtgox.css";
+  cssURI = "https://payment.mtgox.com/css/mtgox.min.css";
 
   imgLogo = "https://payment.mtgox.com/img/button-logo.png";
 

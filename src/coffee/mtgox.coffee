@@ -27,7 +27,7 @@ sIoLoaded = false
 # Whether we added the CSS or not
 cssAdded = false
 # CSS file
-cssURI = "https://payment.mtgox.com/css/mtgox.css"
+cssURI = "https://payment.mtgox.com/css/mtgox.min.css"
 # MtGox + BTC logo
 imgLogo = "https://payment.mtgox.com/img/button-logo.png"
 # Socket.io's host
