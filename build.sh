@@ -13,6 +13,7 @@ if [ "$1" = "pages" ]; then
 	cp -r docs "$TMP";
 	git checkout gh-pages;
 	rsync -avc "$TMP/" ./;
+	exit 0;
 fi;
 
 # check for pygments
