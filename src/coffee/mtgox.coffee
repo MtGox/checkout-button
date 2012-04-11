@@ -72,7 +72,9 @@ class Utility
 	#
 	# Cross-browser implementation of getElementsByClassName, using a fallback on the native
 	# implementation if possible, then on querySelectorAll and finally on manually reading each
-	# element for older browsers
+	# element for older browsers, this function was taken and modified from the now defunct
+	# SwellJS library from Jonathan Gautheron <jgautheron@tenwa.pl> (https://github.com/jgautheron)
+	# and Christophe Eblé
 	@getElementsByClassName: (className, root = document.body, tagName = '') ->
 		return root.getElementsByClassName(className) if document.getElementsByClassName
 
