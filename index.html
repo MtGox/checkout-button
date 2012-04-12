@@ -11,9 +11,20 @@ bitcoin price and can be implemented very easily on a website.
 
 </p>
 <ul>
-<li><a href="html/src-less-mtgox.html">src/less/mtgox.less</a></li>
-<li><a href="mtgox.html">src/coffee/mtgox.coffee</a></li>
+<li><a href="http://mtgox.github.com/checkout-button/html/src-less-mtgox.html">src/less/mtgox.less</a> (<a href="https://github.com/MtGox/checkout-button/blob/master/src/less/mtgox.less">source</a>)</li>
+<li><a href="http://mtgox.github.com/checkout-button/mtgox.html">src/coffee/mtgox.coffee</a> (<a href="https://github.com/MtGox/checkout-button/blob/master/src/coffee/mtgox.coffee">source</a>)</li>
 </ul>
+<h1>Building</h1>
+<p>To build the distribution files just run the following commands from the main folder
+
+</p>
+<pre><code class="bash"># install dependencies
+[user@host]$ npm install
+# build everything
+[user@host]$ ./jake</code></pre>
+<p>To build only parts of the dist/doc, see <code>./jake --tasks</code> and run <code>./jake taskname</code>
+
+</p>
 <h1>Usage</h1>
 <p>The user needs to add 2 components in its page, a span using the class <strong>mtgox</strong> and three <strong>data-</strong> tags:
 
