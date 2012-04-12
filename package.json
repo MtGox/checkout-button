@@ -7,6 +7,7 @@
 		"coffee-script": ">= 1.2.0",
 		"uglify-js": ">= 1.2.6",
 		"docco": ">= 0.3.0",
-		"styledocco": ">= 0.3.2"
+		"styledocco": ">= 0.3.2",
+		"jake": ">= 0.2.33"
 	}
 }

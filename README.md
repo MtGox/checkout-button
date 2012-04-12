@@ -8,8 +8,22 @@ Documentation
 
 See the following files:
 
-* [src/less/mtgox.less](html/src-less-mtgox.html)
-* [src/coffee/mtgox.coffee](mtgox.html)
+* [src/less/mtgox.less](http://mtgox.github.com/checkout-button/html/src-less-mtgox.html) ([source](https://github.com/MtGox/checkout-button/blob/master/src/less/mtgox.less))
+* [src/coffee/mtgox.coffee](http://mtgox.github.com/checkout-button/mtgox.html) ([source](https://github.com/MtGox/checkout-button/blob/master/src/coffee/mtgox.coffee))
+
+Building
+========
+
+To build the distribution files just run the following commands from the main folder
+
+```bash
+# install dependencies
+[user@host]$ npm install
+# build everything
+[user@host]$ ./jake
+```
+
+To build only parts of the dist/doc, see ```./jake --tasks``` and run ```./jake taskname```
 
 Usage
 =====
