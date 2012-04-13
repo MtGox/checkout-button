@@ -2,8 +2,16 @@
 spawn = require('child_process').spawn;
 fs = require 'fs'
 
-node_exec = (cmd, args) ->
-	return spawn 'node_modules/.bin/' + cmd, args
+node_exec = (cmd, args, cb) ->
+	stderr = ''
+	stdout = ''
+	ps = spawn 'node_modules/.bin/' + cmd, args
+	ps.stderr.on 'data', (data) ->
+		stderr += data
+	ps.stdout.on 'data', (data) ->
+		stdout += data
+	ps.on 'exit', (code) ->
+		cb(code, stdout, stderr)
 
 # dependencie management
 namespace 'dependencies', ->
@@ -18,11 +26,7 @@ namespace 'dependencies', ->
 namespace 'dist', ->
 	desc 'Build the CSS'
 	task 'css', [], ->
-		lessc = node_exec 'lessc', ['src/less/mtgox.less', 'dist/css/mtgox.css']
-		stderr = ''
-		lessc.stderr.on 'data', (data) ->
-			stderr += data
-		lessc.on 'exit', (code) ->
+		node_exec 'lessc', ['src/less/mtgox.less', 'dist/css/mtgox.css'], (code, stdout, stderr) ->
 			if code != 0
 				console.log 'lessc exited with code ' + code
 				console.log stderr
@@ -34,11 +38,7 @@ namespace 'dist', ->
 	# called once the CSS is generated
 	desc 'Build the minified CSS'
 	task 'css-minified', [], ->
-		lessc = node_exec 'lessc', ['src/less/mtgox.less', '--yui-compress', 'dist/css/mtgox.min.css']
-		stderr = ''
-		lessc.stderr.on 'data', (data) ->
-			stderr += data
-		lessc.on 'exit', (code) ->
+		node_exec 'lessc', ['src/less/mtgox.less', '--yui-compress', 'dist/css/mtgox.min.css'], (code, stdout, stderr) ->
 			if code != 0
 				console.log 'lessc exited with code ' + code
 				console.log stderr
@@ -50,11 +50,7 @@ namespace 'dist', ->
 	desc 'Build the Javascript'
 	task 'js', [], ->
 		#console.log @description
-		coffee = node_exec 'coffee', ['-o', 'dist/js/', '-c', 'src/coffee/mtgox.coffee']
-		stderr = ''
-		coffee.stderr.on 'data', (data) ->
-			stderr += data
-		coffee.on 'exit', (code) ->
+		node_exec 'coffee', ['-o', 'dist/js/', '-c', 'src/coffee/mtgox.coffee'], (code, stdout, stderr) ->
 			if code != 0
 				console.log 'coffee exited with code ' + code
 				console.log stderr
@@ -67,14 +63,7 @@ namespace 'dist', ->
 	desc 'Build the minified Javascript'
 	task 'js-minified', [], ->
 		#console.log @description
-		uglifyjs = node_exec 'uglifyjs', ['dist/js/mtgox.js']
-		stdout = ''
-		stderr = ''
-		uglifyjs.stdout.on 'data', (data) ->
-			stdout += data
-		uglifyjs.stderr.on 'data', (data) ->
-			stderr += data
-		uglifyjs.on 'exit', (code) ->
+		node_exec 'uglifyjs', ['dist/js/mtgox.js'], (code, stdout, stderr) ->
 			if code != 0
 				console.log 'uglifyjs exited with code ' + code
 				console.log stderr
@@ -87,11 +76,7 @@ namespace 'dist', ->
 namespace 'doc', ->
 	desc 'Build LESS documentation'
 	task 'less', ['dependencies:pygments'], ->
-		styledocco = node_exec 'styledocco', ['-n', 'MtGox', 'src/less/mtgox.less']
-		stderr = ''
-		styledocco.stderr.on 'data', (data) ->
-			stderr += data
-		styledocco.on 'exit', (code) ->
+		node_exec 'styledocco', ['-n', 'MtGox', 'src/less/mtgox.less'], (code, stdout, stderr) ->
 			if code != 0
 				console.log 'styledocco exited with code ' + code
 				console.log stderr
@@ -101,11 +86,7 @@ namespace 'doc', ->
 
 	desc 'Build script documentation'
 	task 'coffee', ['dependencies:pygments'], ->
-		docco = node_exec 'docco', ['src/coffee/mtgox.coffee']
-		stderr = ''
-		docco.stderr.on 'data', (data) ->
-			stderr += data
-		docco.on 'exit', (code) ->
+		node_exec 'docco', ['src/coffee/mtgox.coffee'], (code, stdout, stderr) ->
 			if code != 0
 				console.log 'docco exited with code ' + code
 				console.log stderr

@@ -43,7 +43,7 @@ destroy the element completely before calling the callback</p>             </td>
 <p>Cross-browser implementation of getElementsByClassName, using a fallback on the native
 implementation if possible, then on querySelectorAll and finally on manually reading each
 element for older browsers, this function was taken and modified from the now defunct
-SwellJS library from Jonathan Gautheron <a href="&#x6D;&#97;&#105;&#x6C;&#x74;&#x6F;:&#x6A;&#x67;&#97;&#x75;&#116;&#x68;&#101;&#x72;&#111;&#110;&#x40;&#x74;&#101;&#x6E;&#x77;&#x61;&#x2E;&#112;&#108;">&#x6A;&#x67;&#97;&#x75;&#116;&#x68;&#101;&#x72;&#111;&#110;&#x40;&#x74;&#101;&#x6E;&#x77;&#x61;&#x2E;&#112;&#108;</a> (https://github.com/jgautheron)
+SwellJS library from Jonathan Gautheron <a href="&#x6D;&#97;&#105;&#x6C;&#116;&#111;:&#x6A;&#103;&#x61;&#117;&#116;&#104;&#101;&#x72;&#x6F;&#x6E;&#x40;&#x74;&#101;&#x6E;&#119;&#97;&#x2E;&#x70;&#x6C;">&#x6A;&#103;&#x61;&#117;&#116;&#104;&#101;&#x72;&#x6F;&#x6E;&#x40;&#x74;&#101;&#x6E;&#119;&#97;&#x2E;&#x70;&#x6C;</a> (https://github.com/jgautheron)
 and Christophe Eblé</p>             </td>             <td class="code">               <div class="highlight"><pre>	<span class="vi">@getElementsByClassName: </span><span class="nf">(className, root = document.body, tagName = &#39;&#39;) -&gt;</span>
 		<span class="k">return</span> <span class="nx">root</span><span class="p">.</span><span class="nx">getElementsByClassName</span><span class="p">(</span><span class="nx">className</span><span class="p">)</span> <span class="k">if</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByClassName</span>
 
