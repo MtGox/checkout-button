@@ -19,13 +19,15 @@ Allows us to change the whole apparence of the button without having to tinkle w
 */
 @main-color:      rgb(249, 179, 19);
 @secondary-color: rgb(239, 239, 239);
-@text-shadow:     rgba(0, 0, 0, 0.4);
+@text-shadow:     rgba(0, 0, 0, 0.3);
 @text-color:      white;
-@round:           5px;
+@round:           3px;
 @main-padding:    10px;
-@font-size:       16px;
+@font-size:       15px;
 @text-padding:    4px;
 @line-height:     @font-size + @text-padding;
+@logo-width:      76px;
+@gradient-pc:     6%;
 
 /*
 *mixin* **.gradient**(@color: #F5F5F5, @start: #EEE, @stop: #FFF)
@@ -70,9 +72,9 @@ itself when
 */
 a.mtgox-button {
 	/* basic styles */
-	padding: 1px;
+	/*padding: 1px;*/
 	background: white;
-	border: 1px solid @main-color;
+	border: 1px solid darken(@main-color, 5%);
 	display: inline-block;
 	overflow: hidden;
 
@@ -86,7 +88,6 @@ a.mtgox-button {
 
 	/* ice on top */
 	.border-radius(@round);
-	.box-shadow(0 0 1px 1px @main-color);
 	.transition(all, 0.25s, 0, ease-in-out);
 
 	// the amount element
@@ -94,7 +95,7 @@ a.mtgox-button {
 		overflow: hidden;
 		height: 18px;
 		padding: @main-padding;
-		padding-right: 90px + @main-padding;
+		padding-right: @logo-width + @main-padding + 10px;
 		vertical-align: middle;
 
 		/* we use absolute positioning on mtgox-button-logo */
@@ -103,7 +104,7 @@ a.mtgox-button {
 		/* ice on top */
 		.text-shadow(1px, 1px, 2px, @text-shadow);
 		.border-radius(@round);
-		.gradient(@main-color, darken(@main-color, 4%), @main-color);
+		.gradient(@main-color, spin(@main-color, -9), @main-color);
 
 		// the content element
 		.mtgox-button-cur {
@@ -120,15 +121,16 @@ a.mtgox-button {
 			bottom: 0;
 			right: 0;
 			padding-top: 0px;
-			width: 90px;
+			width: @logo-width + 10px;
 
 			/* ice on top */
-			.border-radius(5px, 5px, 0, 0);
-			.gradient(@secondary-color, darken(@secondary-color, 4%), @secondary-color);
+			.border-radius(0, @round, @round, 0);
+			.gradient(@secondary-color, darken(@secondary-color, @gradient-pc), @secondary-color);
 
 			// fix for FF 3.5
 			img {
 				border: 0;
+				padding: @main-padding - 4px;
 			}
 		}
 	}

@@ -29,7 +29,7 @@ cssAdded = false
 # CSS file
 cssURI = "https://payment.mtgox.com/css/mtgox.min.css"
 # MtGox + BTC logo
-imgLogo = "https://payment.mtgox.com/img/button-logo.png"
+imgLogo = "https://payment.mtgox.com/img/button-logo.png?v3"
 # Socket.io's host
 socketIoHost = "https://socketio.mtgox.com:443"
 # Retrieve the right "head" object
@@ -277,7 +277,7 @@ registerButton = (element) ->
 
 	elem_img_container = MtGoxElement.create("span.mtgox-button-logo", {}, elem_amount)
 
-	img_attrs = {src: imgLogo, width: "88", height: "33"}
+	img_attrs = {src: imgLogo}
 	MtGoxElement.create("img", img_attrs, elem_img_container)
 
 	# Finally remove element childs and add button to the DOM

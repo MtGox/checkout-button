@@ -11,7 +11,7 @@
 
   cssURI = "https://payment.mtgox.com/css/mtgox.min.css";
 
-  imgLogo = "https://payment.mtgox.com/img/button-logo.png";
+  imgLogo = "https://payment.mtgox.com/img/button-logo.png?v3";
 
   socketIoHost = "https://socketio.mtgox.com:443";
 
@@ -267,9 +267,7 @@
     cur_element.setContent(btc_text);
     elem_img_container = MtGoxElement.create("span.mtgox-button-logo", {}, elem_amount);
     img_attrs = {
-      src: imgLogo,
-      width: "88",
-      height: "33"
+      src: imgLogo
     };
     MtGoxElement.create("img", img_attrs, elem_img_container);
     element.clean();
