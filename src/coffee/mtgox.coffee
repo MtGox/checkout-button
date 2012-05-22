@@ -27,13 +27,15 @@ sIoLoaded = false
 # Whether we added the CSS or not
 cssAdded = false
 # CSS file
-cssURI = "https://payment.mtgox.com/css/mtgox.min.css"
+cssURI = "/dist/css/mtgox.min.css"
 # MtGox + BTC logo
-imgLogo = "https://payment.mtgox.com/img/button-logo.png?v3"
+imgLogo = "https://payment.mtgox.com/img/button-logo.v4.png"
 # Socket.io's host
 socketIoHost = "https://socketio.mtgox.com:443"
 # Retrieve the right "head" object
 head = document.head or (document.getElementsByTagName("head"))[0] or document.documentElement
+# list of currencies used by the buttons
+buttonCurrencies = {}
 
 #### Utility
 
@@ -91,6 +93,12 @@ class Utility
 
 		return nodeList
 
+	@keys: (object) ->
+		return Object.keys(object) if Object.keys?
+		keys = []
+		for key, value of object
+			keys.push key
+		return keys
 
 #### MtGoxElement
 
@@ -104,8 +112,8 @@ class MtGoxElement
 
 	# **hasAttribute**
 	#
-	# Check if the element as the attribute *attr* first by trying to call the native **hasAttribute** method
-	# if it exists, or fallback to *object.attr*, return false on failure
+	# Check if the element as the attribute *attr* first by trying to call the native **hasAttribute**
+	# method if it exists, or fallback to *object.attr*, return false on failure
 	hasAttribute: (attr) ->
 		if @element.hasAttribute?
 			return @element.hasAttribute(attr)
@@ -183,6 +191,41 @@ class MtGoxElement
 			parent.appendChild(elem)
 		return elem
 
+#### formatCurrency
+currencies = {
+	BTC: { symbol: 'BTC', format: "%v %s", precision: 3, rate: 1 },
+	USD: { symbol: '$', format: "%s%v", precision: 2, rate: 5.06221 },
+	EUR: { symbol: '&euro;', format: "%v%s", precision: 2, rate: 4.01817 },
+	JPY: { symbol: '&yen;', format: "%s %v", precision: 0, rate: 401.098 },
+	CAD: { symbol: 'CA$', format: "%s %v", precision: 2 },
+	CNY: { symbol: '&yen;', format: "%s %v", precision: 2 },
+	GBP: { symbol: '&pound;', format: "%s%v", precision: 2 },
+}
+
+# format number using accounting.js if available
+formatCurrency = (amount, currency) ->
+	currency = if currencies[currency]? then currencies[currency] else currencies['USD']
+	precision_cent = Math.pow(10, currency.precision)
+	amount = (Math.round(amount * precision_cent) / precision_cent).toString()
+	isfloat = (amount.indexOf('.') >= 0)
+	pad = 0
+	base = parseInt(amount)
+	decimal = amount - base
+	if currency.precision > 0
+		if !isfloat
+			amount += '.'
+		else
+			pad = amount.length - amount.indexOf('.') - 1
+		amount += (new Array((currency.precision + 1) - pad)).join('0')
+	return currency.format.replace("%s", currency.symbol).replace("%v", amount)
+
+convertCurrency = (amount, from, to) ->
+	if from == 'BTC'
+		currency = if currencies[to]? then currencies[to] else currencies['USD']
+		return amount * currency.rate
+	currency = if currencies[from]? then currencies[from] else currencies['USD']
+	return amount / currency.rate
+
 #### MtGoxSocket
 
 # Encapsulate the Socket.IO functionnality
@@ -199,16 +242,19 @@ class MtGoxSocket
 	# Parse a *private* packet and redirect to handler
 	@parseSIOPrivate: (type, data) ->
 		switch type
-			when "ticker" then MtGoxSocket.updateButtons(data.last_all.value)
+			when "ticker"
+				currencies[data.buy.currency].rate = data.buy.value
+				MtGoxSocket.updateButtons()
 
 	# *static* **updateButtons**
 	#
 	# Get all the buttons on the page and update their current value based on the current ticker value
-	@updateButtons: (btc_value) ->
+	@updateButtons: () =>
 		for button in buttons
-			btc_val = button.btc_element.getAttribute('data-amount')
-			cur_val = Math.round(btc_val * btc_value * 100) / 100
-			button.cur_element.setContent('US$ ' + cur_val)
+			base_val = button.btc_element.getAttribute('data-amount')
+			base_cur = button.btc_element.getAttribute('data-currency')
+			dist_cur = button.cur_element.getAttribute('data-currency')
+			button.cur_element.setContent(formatCurrency convertCurrency(base_val, base_cur, dist_cur), dist_cur)
 
 	# *static* **registerButtonUpdate**
 	#
@@ -216,9 +262,8 @@ class MtGoxSocket
 	@registerButtonUpdate: () ->
 		if window.io
 			io = window.io
-			socket = io.connect(socketIoHost + "/mtgox?Currency=USD&Channel=ticker")
+			socket = io.connect(socketIoHost + "/mtgox?Currency=" + Utility.keys(buttonCurrencies).join(',') + "&Channel=ticker")
 			socket.on("message", MtGoxSocket.parseSIOMessage)
-
 
 #### registerButton
 
@@ -228,28 +273,15 @@ class MtGoxSocket
 #
 #  	a.mtgox-button
 # 	  div.mtgox-button-amount
-# 	    span.mtgox-button-btc(data-rel="428.50") 428.50 BTC
+# 	    span.mtgox-button-base(data-rel="428.50") 428.50 BTC
 # 	    br
-# 	    span.mtgox-button-cur US$ 2113.80
+# 	    span.mtgox-button-dist US$ 2113.80
 # 	    span.mtgox-button-logo
 # 	      img(src="https://payment.mtgox.com/img/button-logo.png", width="88", height="33")
 #
 # Finally we empty the target element and append our button inside
 registerButton = (element) ->
 	return false if !element.nodeType?
-
-	if !sIoLoaded
-		sIoLoaded = true
-		Utility.getScript(socketIoHost + "/socket.io/socket.io.js", MtGoxSocket.registerButtonUpdate)
-
-	if !cssAdded
-		cssAdded = true
-		elem_attr =
-			rel: "stylesheet",
-			type: "text/css",
-			href: cssURI
-		elem_link = MtGoxElement.create("link", elem_attr)
-		head.insertBefore(elem_link.get(), head.firstChild)
 
 	element = new MtGoxElement(element)
 
@@ -259,21 +291,28 @@ registerButton = (element) ->
 		return false if !element.hasAttribute(attrName)
 		order_info[attrName.replace("data-","")] = element.getAttribute(attrName)
 
+	if order_info.currency == 'BTC'
+		dest_cur = 'USD'
+		buttonCurrencies['USD'] = true
+	else
+		dest_cur = 'BTC'
+		buttonCurrencies[order_info.currency] = true
+
 	payment_url    = "https://payment.mtgox.com/" + order_info.id
 
 	elem_a = MtGoxElement.create("a.mtgox-button", {"href": payment_url, "target": "_blank" })
 
-	elem_amount = MtGoxElement.create("div.mtgox-button-amount", {}, elem_a)
+	elem_amount = MtGoxElement.create("span.mtgox-button-amount", {}, elem_a)
 
-	btc_text = order_info.amount + " " + order_info.currency
-	btc_element = MtGoxElement.create("span.mtgox-button-btc", {"data-amount": order_info.amount}, elem_amount)
+	btc_text = formatCurrency order_info.amount, order_info.currency
+	btc_element = MtGoxElement.create("span.mtgox-button-base", {"data-amount": order_info.amount, "data-currency": order_info.currency}, elem_amount)
 	btc_element.setContent(btc_text)
 
 	MtGoxElement.create("br", {}, elem_amount)
 
 	# Use the BTC amount in the currency element until we get the USD value on the ticker
-	cur_element = MtGoxElement.create("span.mtgox-button-cur", {}, elem_amount)
-	cur_element.setContent(btc_text)
+	cur_element = MtGoxElement.create("span.mtgox-button-dist", {"data-currency": dest_cur}, elem_amount)
+	cur_element.setContent(formatCurrency convertCurrency(order_info.amount, order_info.currency, dest_cur), dest_cur)
 
 	elem_img_container = MtGoxElement.create("span.mtgox-button-logo", {}, elem_amount)
 
@@ -294,7 +333,21 @@ registerButton = (element) ->
 readyDone = false
 findButtons = () ->
 	return true if readyDone == true
+	# load the CSS
+	if !cssAdded
+		cssAdded = true
+		elem_attr =
+			rel: "stylesheet",
+			type: "text/css",
+			href: cssURI
+		elem_link = MtGoxElement.create("link", elem_attr)
+		head.insertBefore(elem_link.get(), head.firstChild)
+	# find every button
 	registerButton(element) for element in Utility.getElementsByClassName('mtgox')
+	# plug the socket.io
+	if !sIoLoaded
+		sIoLoaded = true
+		Utility.getScript(socketIoHost + "/socket.io/socket.io.js", MtGoxSocket.registerButtonUpdate)
 	readyDone = true
 
 # Check for the document "readyness" and fire the above handler if necessary

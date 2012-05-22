@@ -97,6 +97,7 @@ a.mtgox-button {
 		padding: @main-padding;
 		padding-right: @logo-width + @main-padding + 10px;
 		vertical-align: middle;
+		display: inline-block;
 
 		/* we use absolute positioning on mtgox-button-logo */
 		position: relative;
@@ -106,11 +107,21 @@ a.mtgox-button {
 		.border-radius(@round);
 		.gradient(@main-color, spin(@main-color, -9), @main-color);
 
+		// the base currency
+		.mtgox-button-base {
+			display: inline-block;
+			width: 100%;
+			text-align: center;
+		}
+
 		// the content element
-		.mtgox-button-cur {
+		.mtgox-button-dist {
 			position: relative;
 			top: 50px;
 			visibility: hidden;
+			display: inline-block;
+			width: 100%;
+			text-align: center;
 			.opacity(0);
 		}
 
@@ -130,7 +141,7 @@ a.mtgox-button {
 			// fix for FF 3.5
 			img {
 				border: 0;
-				padding: @main-padding - 4px;
+				padding: 6px @main-padding - 4px;
 			}
 		}
 	}
@@ -141,11 +152,11 @@ a.mtgox-button {
 		text-decoration: none;
 		color: @text-color;
 
-		.mtgox-button-btc {
+		.mtgox-button-base {
 			visibility: hidden;
 			.opacity(0);
 		}
-		.mtgox-button-cur {
+		.mtgox-button-dist {
 			top: @line-height * -1;
 			visibility: visible;
 			.opacity(1);
