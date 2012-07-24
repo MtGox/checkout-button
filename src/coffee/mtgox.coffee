@@ -27,7 +27,7 @@ sIoLoaded = false
 # Whether we added the CSS or not
 cssAdded = false
 # CSS file
-cssURI = "/dist/css/mtgox.min.css"
+cssURI = "https://payment.mtgox.com/css/mtgox.min.css"
 # MtGox + BTC logo
 imgLogo = "https://payment.mtgox.com/img/button-logo.v4.png"
 # Socket.io's host
@@ -192,15 +192,7 @@ class MtGoxElement
 		return elem
 
 #### formatCurrency
-currencies = {
-	BTC: { symbol: 'BTC', format: "%v %s", precision: 3, rate: 1 },
-	USD: { symbol: '$', format: "%s%v", precision: 2, rate: 5.06221 },
-	EUR: { symbol: '&euro;', format: "%v%s", precision: 2, rate: 4.01817 },
-	JPY: { symbol: '&yen;', format: "%s %v", precision: 0, rate: 401.098 },
-	CAD: { symbol: 'CA$', format: "%s %v", precision: 2 },
-	CNY: { symbol: '&yen;', format: "%s %v", precision: 2 },
-	GBP: { symbol: '&pound;', format: "%s%v", precision: 2 },
-}
+currencies = window.MtGox.currencies
 
 # format number using accounting.js if available
 formatCurrency = (amount, currency) ->
@@ -291,6 +283,9 @@ registerButton = (element) ->
 		return false if !element.hasAttribute(attrName)
 		order_info[attrName.replace("data-","")] = element.getAttribute(attrName)
 
+	# allows the user to add custom infos to the payment
+	order_info['custom'] = if element.hasAttribute('data-custom') then element.getAttribute('data-custom') else false
+
 	if order_info.currency == 'BTC'
 		dest_cur = 'USD'
 		buttonCurrencies['USD'] = true
@@ -299,6 +294,8 @@ registerButton = (element) ->
 		buttonCurrencies[order_info.currency] = true
 
 	payment_url    = "https://payment.mtgox.com/" + order_info.id
+	if order_info['custom'] != false
+		payment_url += '?custom=' + encodeURIComponent(order_info['custom'])
 
 	elem_a = MtGoxElement.create("a.mtgox-button", {"href": payment_url, "target": "_blank" })
 
@@ -365,8 +362,4 @@ else
 #### Exports
 
 # This is our namespace and public methods
-mtgox =
-	button: registerButton
-
-# Export the namespace to the global object
-window.MtGox = mtgox
+window.MtGox.button = registerButton

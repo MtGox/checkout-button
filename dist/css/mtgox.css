@@ -93,6 +93,7 @@ a.mtgox-button .mtgox-button-amount {
   -webkit-background-clip: padding-box;
   -moz-background-clip: padding;
   background-clip: padding-box;
+  color: white;
   background-color: #f9b313;
   background-image: -webkit-linear-gradient(bottom , #f99113 0% , #f9b313 100%);
   background-image: -moz-linear-gradient(bottom , #f99113 0% , #f9b313 100%);
@@ -103,11 +104,13 @@ a.mtgox-button .mtgox-button-amount {
 a.mtgox-button .mtgox-button-amount .mtgox-button-base {
   display: inline-block;
   width: 100%;
+  color: white;
   text-align: center;
 }
 a.mtgox-button .mtgox-button-amount .mtgox-button-dist {
   position: relative;
   top: 50px;
+  color: white;
   visibility: hidden;
   display: inline-block;
   width: 100%;
